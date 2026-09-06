@@ -1,14 +1,17 @@
 - name: create ec2 and r53
   hosts: local
   connection: local
+  gather_facts: false
+
   vars:
     ami_id: "ami-0220d79f3f480ecf5"
     sg_id: "sg-08aa3e7b6d2e04568"
     zone_id: "Z0130922213SF6HRWZW9U"
     domain_name: "daws85s.online"
     instances:
-    - mongodb
-    tasks:
+      - mongodb
+
+  tasks:
     - name: create ec2 instance
       amazon.aws.ec2_instance:
         name: "{{ item }}"
@@ -23,4 +26,3 @@
     - name: print the ec2_output
       ansible.builtin.debug:
         msg: "{{ ec2_output }}"
-
