@@ -12,6 +12,8 @@
     instances:
       - mongodb
       - redis
+      - mysql
+      - rabbitmq
 
   tasks:
     - name: create ec2 instance
@@ -25,9 +27,9 @@
       loop: "{{ instances }}"
       register: ec2_output
 
-    - name: print the ec-2 output
-      ansible.builtin.debug:
-        msg: "{{ ec2_output }}"
+    # - name: print the ec-2 output
+    #   ansible.builtin.debug:
+    #     msg: "{{ ec2_output }}"
 
 
 
@@ -47,13 +49,13 @@
     #     msg: "{{ item.instances[0].private_ip_address }}"
     #   loop: "{{ ec2_output.results }}"
 
-    # - name: create route 53 record
-    #   amazon.aws.route53:
-    #     state: present
-    #     zone: "{{ domain_name }}"
-    #     record: "{{ item.item }}.{{ domain_name }}"
-    #     type: A
-    #     ttl: 1
-    #     value: "{{ item.instances[0].private_ip_address }}"
-    #     overwrite: true
-    #   loop: "{{ ec2_output.results }}"
+    - name: create route 53 record
+      amazon.aws.route53:
+        state: present
+        zone: "{{ domain_name }}"
+        record: "{{ item.item }}.{{ domain_name }}"
+        type: A
+        ttl: 1
+        value: "{{ item.instances[0].private_ip_address }}"
+        overwrite: true
+      loop: "{{ ec2_output.results }}"
