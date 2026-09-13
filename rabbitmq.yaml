@@ -3,7 +3,7 @@
   become: yes
   tasks:
   - name: copy rabbitmq repo
-    ansible.builtin.package:
+    ansible.builtin.copy:
       src: rabbitmq.repo
       dest: /etc/yum.repos.d/rabbitmq.repo
 
@@ -14,7 +14,7 @@
 
   - name: start and enable rabbitmq server
     ansible.builtin.service:
-      name: rabbitmq.server
+      name: rabbitmq-server
       state: started
       enabled: yes
 
