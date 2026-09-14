@@ -22,12 +22,25 @@
       system: true
       shell: /sbin/nologin
       home: /app
+  
+  - name: remove app directory
+    ansible.builtin.files:
+      state: directory
+      path: /app
 
 
   - name: create app directory
     ansible.builtin.file:
       state: directory
       path: /app
+
+
+  - name: Delete catalogue file
+    ansible.builtin.file:
+      path: /tmp/catalogue.zip
+      state: absent
+
+
 
 
   - name: download catalogue application
@@ -74,8 +87,15 @@
     when: catalogue_output.stdout | int < 0
 
 
-  - name: start and enable catalogue
-    ansible.builtin.service:
+  # - name: start and enable catalogue
+  #   ansible.builtin.service:
+  #     name: catalogue
+  #     enabled: yes
+  #     state: started             
+
+  - name: daemon reload enable and start
+    ansible.builtin.systemd_service:
       name: catalogue
-      enabled: yes
-      state: started             
+      enabled: true
+      state: started
+      daemon_reload: true      
