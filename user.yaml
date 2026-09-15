@@ -63,7 +63,7 @@
 
   - name: copy user service
     ansible.builtin.copy:
-      src: user.service
+      src: files/user.service
       dest: /etc/systemd/system/user.service
 
  
