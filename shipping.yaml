@@ -9,6 +9,11 @@
     loop:
     - maven
     - mysql  
+
+  - name: install mysql python libraries
+    ansible.builtin.pip:
+      executable: pip3.9
+      name: PyMySQL  
   
   - name: create roboshop system user
     ansible.builtin.user:
